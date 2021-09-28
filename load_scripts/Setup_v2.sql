@@ -28,52 +28,56 @@ GO
 
 -- Create Tables
 CREATE TABLE DimCustomer (
+	ID uniqueidentifier DEFAULT NEWSEQUENTIALID(),
 	Customer_ID nvarchar(50) not null,					-- customer natural key
 	Customer_First_Name nvarchar(20) null,
 	Customer_Surname nvarchar(20) null,					-- note not null may not always be true	
-	Primary Key (Customer_ID)
+	Primary Key (ID)
 )
 
 CREATE TABLE DimStaff (
+	ID uniqueidentifier DEFAULT NEWSEQUENTIALID(),
 	Staff_ID nvarchar(50) not null,						-- staff natural key identifer
 	Staff_First_Name	nvarchar(20) null,				
 	Staff_Surname		nvarchar(20) null,
 	Location_ID nvarchar(2) not null,
 	Location_Name nvarchar(20) not null,
-	Primary Key (Staff_ID),
+	Primary Key (ID),
 )
 
-CREATE TABLE DimItem (					
+CREATE TABLE DimItem (		
+	ID uniqueidentifier DEFAULT NEWSEQUENTIALID(),			
 	Item_ID	nvarchar(50)	not null,					-- Natural Tem key
 	Item_Description nvarchar(30) null,
 	Item_Unit_Price float null,
-	Primary Key (Item_ID)
+	Primary Key (ID)
 )
 
 CREATE TABLE DimDate (
+	ID uniqueidentifier DEFAULT NEWSEQUENTIALID(),
 	Sale_Date datetime2 not null,
 	Day int null,			
 	Month int	null,					
 	Quarter int null,
 	Year int null,
-	Primary Key (Sale_Date)
+	Primary Key (ID)
 )
 
 
 CREATE TABLE FactSales (
-	Sale_Date datetime2 not null,
-	Customer_ID nvarchar(50) not null,
-	Staff_ID nvarchar(50) not null,
-	Item_ID nvarchar(50) not null,
+	Dim_Date_ID uniqueidentifier not null,
+	Dim_Customer_ID uniqueidentifier not null,
+	Dim_Staff_ID uniqueidentifier not null,
+	Dim_Item_ID uniqueidentifier not null,
 	Receipt_ID nvarchar(50) not null,
 	Receipt_Transaction_Row_ID nvarchar(50) not null,
 	Item_Quantity int not null,	
 	Row_Total float null,
-	PRIMARY KEY (Sale_Date, Customer_ID, Staff_ID, Item_ID, Receipt_ID, Receipt_Transaction_Row_ID),
-	FOREIGN KEY (Sale_Date) REFERENCES DimDate (Sale_Date),
-	FOREIGN KEY (Customer_ID) REFERENCES DimCustomer (Customer_ID),
-	FOREIGN KEY (Staff_ID) REFERENCES DimStaff (Staff_ID),
-	FOREIGN KEY (Item_ID) REFERENCES DimItem (Item_ID),
+	PRIMARY KEY (Dim_Date_ID, Dim_Customer_ID, Dim_Staff_ID, Dim_Item_ID, Receipt_ID, Receipt_Transaction_Row_ID),
+	FOREIGN KEY (Dim_Date_ID) REFERENCES DimDate (ID),
+	FOREIGN KEY (Dim_Customer_ID) REFERENCES DimCustomer (ID),
+	FOREIGN KEY (Dim_Staff_ID) REFERENCES DimStaff (ID),
+	FOREIGN KEY (Dim_Item_ID) REFERENCES DimItem (ID),
 )
 go
 
