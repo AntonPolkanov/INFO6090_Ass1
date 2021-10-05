@@ -7,7 +7,7 @@
 USE Assignment1_v2
 GO
 
--- Delete the last empty row added by SSIS import
+-- Delete the last empty row added by the Import Data task
 DELETE FROM SalesData WHERE "Customer ID" IS NULL;
 
 IF OBJECT_ID('tempdb..#tmp') IS NOT NULL
