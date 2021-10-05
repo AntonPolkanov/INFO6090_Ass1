@@ -20,9 +20,9 @@ SELECT
       ,fs.[Receipt_Transaction_Row_ID]
       ,fs.[Item_Quantity]
       ,fs.[Row_Total]
-	  ,fs.[Item_Quantity] * di.[Item_Price] as Row_Total_Calculated
+	  ,fs.[Item_Quantity] * di.[Item_Unit_Price] as Row_Total_Calculated
 	  , CASE 
-			WHEN ABS(Row_Total - fs.[Item_Quantity] * di.[Item_Price]) < @PRECISION
+			WHEN ABS(Row_Total - fs.[Item_Quantity] * di.[Item_Unit_Price]) < @PRECISION
 				THEN '0'
 				ELSE '1'
 			END
