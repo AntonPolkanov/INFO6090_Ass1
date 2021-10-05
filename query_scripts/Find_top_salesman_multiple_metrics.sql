@@ -1,7 +1,3 @@
--- Assumptions: 
--- Receipt_Id - Customer_ID pairs are unique within a day.
--- If an order has several order lines with equal Item_ID and Quantity, we consider it is not a mistake.
-
 ;WITH 
 	Orders AS (
 		SELECT [Sale_Date]
@@ -40,16 +36,13 @@
 	)
 
 
-SELECT Staff_ID
-	,SUM(Discounted_Order_Total) AS Total_Staff_Sales
-	,COUNT(Staff_ID) AS Orders_Handled
-	,SUM(Order_Item_Quantity) AS Total_Items_Sold
-FROM OrdersWithDiscounts 
-GROUP BY Staff_ID
+SELECT owd.Staff_ID
+	,ds.Staff_First_Name
+	,ds.Staff_Surname
+	,SUM(owd.Discounted_Order_Total) AS Total_Staff_Sales
+	--,COUNT(owd.Staff_ID) AS Orders_Handled
+	--,SUM(owd.Order_Item_Quantity) AS Total_Items_Sold
+FROM OrdersWithDiscounts owd
+	JOIN DimStaff ds ON owd.Staff_ID = ds.Staff_ID
+GROUP BY owd.Staff_ID, ds.Staff_First_Name, ds.Staff_Surname
 ORDER BY Total_Staff_Sales DESC
-
-
-
--- 1. Total sales
--- 2. Customers served (Orders handled)
--- 3. Items sold
