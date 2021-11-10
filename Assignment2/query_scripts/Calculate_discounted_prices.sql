@@ -64,17 +64,17 @@
 	)
 
 -- 1. Transactions with the maximum and minimum number of items sold 
---SELECT 
---	Location_Name
---	,MAX(Items_In_Order) as Max_Items_In_Order
---	,MIN(Items_In_Order) as Min_Items_In_Order
---FROM (
---	SELECT SUM(Item_Quantity) as Items_In_Order, Location_Name
---	FROM [FactSalesWithDiscountedPrices]
---	GROUP BY Receipt_ID, Location_Name
---) as tmp
---GROUP BY Location_Name
---ORDER BY Max_Items_In_Order DESC
+SELECT 
+	Location_Name
+	,MAX(Items_In_Order) as Max_Items_In_Order
+	,MIN(Items_In_Order) as Min_Items_In_Order
+FROM (
+	SELECT SUM(Item_Quantity) as Items_In_Order, Location_Name
+	FROM [FactSalesWithDiscountedPrices]
+	GROUP BY Receipt_ID, Location_Name
+) as tmp
+GROUP BY Location_Name
+ORDER BY Max_Items_In_Order DESC
 
 -- 2. Average bucket size
 --SELECT 
@@ -100,12 +100,44 @@
 --GROUP BY Location_Name
 --ORDER BY Avg_Sum_Of_Order DESC
 
--- 4. Finds 3 best/worst performing items in each store
-SELECT Location_Name, Item_Description, SUM(Item_Quantity) as Sum_Of_Items
-FROM [FactSalesWithDiscountedPrices]
-GROUP BY Location_Name, Item_Description
-ORDER BY Location_Name ASC, Sum_Of_Items DESC
+-- 4. Finds 3 best/worst performing items in each store by
+-- printing sum of sold items for each store and item
+--SELECT Location_Name, Item_Description, SUM(Item_Quantity) as Sum_Of_Items
+--FROM [FactSalesWithDiscountedPrices]
+--GROUP BY Location_Name, Item_Description
+--ORDER BY Location_Name ASC, Sum_Of_Items DESC
 
+-- 5. Number of unuque customers
+--SELECT Location_Name, COUNT(*) AS Number_Of_Unique_Customers
+--FROM (
+--	SELECT Location_Name
+--	FROM [FactSalesWithDiscountedPrices]
+--	GROUP BY [Location_Name], Customer_Name
+--	) as tmp
+--GROUP BY Location_Name
+--ORDER BY Number_Of_Unique_Customers DESC
+
+-- 6. Number of orders
+ --SELECT Location_Name, COUNT(*) as Number_Of_Orders
+ --FROM (
+ --	SELECT Location_Name
+ --	FROM [FactSalesWithDiscountedPrices]
+ --	GROUP BY [Location_Name], Receipt_ID
+ --	) as tmp
+ --GROUP BY [Location_Name]
+ --ORDER BY Number_Of_Orders DESC
+
+-- 7. Total revenue
+ --SELECT Location_Name, SUM(Discounted_Row_Total) AS Total_Revenue
+ --FROM [FactSalesWithDiscountedPrices]
+ --GROUP BY Location_Name
+ --ORDER BY Total_Revenue DESC
+
+--8. Total items sold
+--SELECT Location_Name, SUM(Item_Quantity) AS Total_Items_Sold
+--FROM [FactSalesWithDiscountedPrices]
+--GROUP BY Location_Name
+--ORDER BY Total_Items_Sold DESC
 
 
 
