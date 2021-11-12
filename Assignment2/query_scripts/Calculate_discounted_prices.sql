@@ -102,10 +102,19 @@ ORDER BY Max_Items_In_Order DESC
 
 -- 4. Finds 3 best/worst performing items in each store by
 -- printing sum of sold items for each store and item
---SELECT Location_Name, Item_Description, SUM(Item_Quantity) as Sum_Of_Items
---FROM [FactSalesWithDiscountedPrices]
---GROUP BY Location_Name, Item_Description
---ORDER BY Location_Name ASC, Sum_Of_Items DESC
+-- SELECT Location_Name, Item_Description, Sum_Of_Items, [Rank]
+-- FROM (
+-- 	SELECT Location_Name, Item_Description, Sum_Of_Items
+-- 		,ROW_NUMBER() OVER (PARTITION BY Location_Name ORDER BY Sum_Of_Items DESC) as [Rank]
+-- 		,ROW_NUMBER() OVER (PARTITION BY Location_Name ORDER BY Sum_Of_Items) as ReverseRank
+-- 	FROM (
+-- 		SELECT Location_Name, Item_Description, SUM(Item_Quantity) as Sum_Of_Items
+-- 		FROM [FactSalesWithDiscountedPrices]
+-- 		GROUP BY Location_Name, Item_Description
+-- 	) as tmp1
+-- ) as tmp2
+-- WHERE [Rank] <= 3 OR [ReverseRank] <= 3
+-- ORDER BY Location_Name ASC, Sum_Of_Items DESC
 
 -- 5. Number of unuque customers
 --SELECT Location_Name, COUNT(*) AS Number_Of_Unique_Customers
@@ -133,7 +142,7 @@ ORDER BY Max_Items_In_Order DESC
  --GROUP BY Location_Name
  --ORDER BY Total_Revenue DESC
 
---8. Total items sold
+-- 8. Total items sold
 --SELECT Location_Name, SUM(Item_Quantity) AS Total_Items_Sold
 --FROM [FactSalesWithDiscountedPrices]
 --GROUP BY Location_Name
