@@ -100,20 +100,20 @@ ORDER BY Max_Items_In_Order DESC
 --GROUP BY Location_Name
 --ORDER BY Avg_Sum_Of_Order DESC
 
--- 4. Finds 3 best/worst performing items in each store by
+-- 4. Finds 3 best/least popular items in each store by
 -- printing sum of sold items for each store and item
 -- SELECT Location_Name, Item_Description, Sum_Of_Items, [Rank]
 -- FROM (
 -- 	SELECT Location_Name, Item_Description, Sum_Of_Items
 -- 		,ROW_NUMBER() OVER (PARTITION BY Location_Name ORDER BY Sum_Of_Items DESC) as [Rank]
--- 		,ROW_NUMBER() OVER (PARTITION BY Location_Name ORDER BY Sum_Of_Items) as ReverseRank
+-- 		,COUNT(Item_Description) OVER (PARTITION BY Location_Name) as Total_Item_Types_In_Store
 -- 	FROM (
 -- 		SELECT Location_Name, Item_Description, SUM(Item_Quantity) as Sum_Of_Items
 -- 		FROM [FactSalesWithDiscountedPrices]
 -- 		GROUP BY Location_Name, Item_Description
 -- 	) as tmp1
 -- ) as tmp2
--- WHERE [Rank] <= 3 OR [ReverseRank] <= 3
+-- WHERE [Rank] <= 3 OR [Rank] > Total_Item_Types_In_Store - 3
 -- ORDER BY Location_Name ASC, Sum_Of_Items DESC
 
 -- 5. Number of unuque customers
