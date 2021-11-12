@@ -64,17 +64,17 @@
 	)
 
 -- 1. Transactions with the maximum and minimum number of items sold 
-SELECT 
-	Location_Name
-	,MAX(Items_In_Order) as Max_Items_In_Order
-	,MIN(Items_In_Order) as Min_Items_In_Order
-FROM (
-	SELECT SUM(Item_Quantity) as Items_In_Order, Location_Name
-	FROM [FactSalesWithDiscountedPrices]
-	GROUP BY Receipt_ID, Location_Name
-) as tmp
-GROUP BY Location_Name
-ORDER BY Max_Items_In_Order DESC
+-- SELECT 
+-- 	Location_Name
+-- 	,MAX(Items_In_Order) as Max_Items_In_Order
+-- 	,MIN(Items_In_Order) as Min_Items_In_Order
+-- FROM (
+-- 	SELECT SUM(Item_Quantity) as Items_In_Order, Location_Name
+-- 	FROM [FactSalesWithDiscountedPrices]
+-- 	GROUP BY Receipt_ID, Location_Name
+-- ) as tmp
+-- GROUP BY Location_Name
+-- ORDER BY Max_Items_In_Order DESC
 
 -- 2. Average bucket size
 --SELECT 
@@ -91,14 +91,14 @@ ORDER BY Max_Items_In_Order DESC
 -- 3. Average ticket size
 --SELECT 
 --	Location_Name
---	,AVG(Sum_Of_Order) as Avg_Sum_Of_Order
+--	, CONVERT(varchar, CAST(AVG(Sum_Of_Order) AS money), 1) as Avg_Sum_Of_Order
 --FROM (
 --	SELECT SUM(Discounted_Row_Total) as Sum_Of_Order, Location_Name
 --	FROM [FactSalesWithDiscountedPrices]
 --	GROUP BY Receipt_ID, Location_Name
 --) as tmp
 --GROUP BY Location_Name
---ORDER BY Avg_Sum_Of_Order DESC
+--ORDER BY AVG(Sum_Of_Order) DESC
 
 -- 4. Finds 3 best/least popular items in each store by
 -- printing sum of sold items for each store and item
@@ -137,10 +137,10 @@ ORDER BY Max_Items_In_Order DESC
  --ORDER BY Number_Of_Orders DESC
 
 -- 7. Total revenue
- --SELECT Location_Name, SUM(Discounted_Row_Total) AS Total_Revenue
- --FROM [FactSalesWithDiscountedPrices]
- --GROUP BY Location_Name
- --ORDER BY Total_Revenue DESC
+ --SELECT Location_Name,  CONVERT(varchar, CAST(SUM(Discounted_Row_Total) AS money), 1) AS Total_Revenue
+--FROM [FactSalesWithDiscountedPrices]
+--GROUP BY Location_Name
+--ORDER BY SUM(Discounted_Row_Total) DESC
 
 -- 8. Total items sold
 --SELECT Location_Name, SUM(Item_Quantity) AS Total_Items_Sold
