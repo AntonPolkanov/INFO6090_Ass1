@@ -148,5 +148,9 @@ ORDER BY Max_Items_In_Order DESC
 --GROUP BY Location_Name
 --ORDER BY Total_Items_Sold DESC
 
-
+-- 9. Worst pperforming items in the company
+-- SELECT TOP 3 Item_Description, CONVERT(varchar, CAST(SUM(Discounted_Row_Total) AS money), 1) AS Revenue_Brought_By_Item
+-- FROM [FactSalesWithDiscountedPrices]
+-- GROUP BY Item_Description
+-- ORDER BY SUM(Discounted_Row_Total)
 
